@@ -1,7 +1,7 @@
 "use client";
 
 import { CarProps } from "@/types";
-import React from "react";
+import React, { Suspense, useState } from "react";
 import Image from "next/image";
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
@@ -12,7 +12,27 @@ interface CarDetailsProps {
   car: CarProps;
 }
 
+// Loading fallback component while the image is being fetched
+const LoadingIndicator = () => (
+  <div className="flex items-center justify-center h-full">
+    <div className="w-6 h-6 border-t-2 border-blue-500 rounded-full animate-spin"></div>
+  </div>
+);
+
 const CarDetails = ({ isOpen, closeModal, car }: CarDetailsProps) => {
+  const [isImage1Loaded, setIsImage1Loaded] = useState(false);
+  const [isImage2Loaded, setIsImage2Loaded] = useState(false);
+  const [isImage3Loaded, setIsImage3Loaded] = useState(false);
+
+  const handleImage1Load = () => {
+    setIsImage1Loaded(true);
+  };
+  const handleImage2Load = () => {
+    setIsImage2Loaded(true);
+  };
+  const handleImage3Load = () => {
+    setIsImage3Loaded(true);
+  };
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
@@ -65,30 +85,36 @@ const CarDetails = ({ isOpen, closeModal, car }: CarDetailsProps) => {
                     </div>
                     <div className="flex gap-3">
                       <div className="relative flex-1 w-full h-24 rounded-lg bg-primary-blue-100">
-                        <Image
+                        {!isImage1Loaded && <LoadingIndicator />}
+                        <img
                           src={generateCarImageUrl(car, "29")}
                           alt="car model"
-                          fill
-                          priority
-                          className="object-contain"
+                          className={`object-fit ${
+                            isImage1Loaded ? "" : "hidden"
+                          }`}
+                          onLoad={() => handleImage1Load()}
                         />
                       </div>
                       <div className="relative flex-1 w-full h-24 rounded-lg bg-primary-blue-100">
-                        <Image
+                        {!isImage2Loaded && <LoadingIndicator />}
+                        <img
                           src={generateCarImageUrl(car, "22")}
                           alt="car model"
-                          fill
-                          priority
-                          className="object-fit"
+                          className={`object-fit ${
+                            isImage2Loaded ? "" : "hidden"
+                          }`}
+                          onLoad={() => handleImage2Load()}
                         />
                       </div>
                       <div className="relative flex-1 w-full h-24 rounded-lg bg-primary-blue-100">
-                        <Image
+                        {!isImage3Loaded && <LoadingIndicator />}
+                        <img
                           src={generateCarImageUrl(car, "13")}
                           alt="car model"
-                          fill
-                          priority
-                          className="object-contain"
+                          className={`object-fit ${
+                            isImage3Loaded ? "" : "hidden"
+                          }`}
+                          onLoad={() => handleImage3Load()}
                         />
                       </div>
                     </div>

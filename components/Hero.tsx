@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import CustomButton from "./CustomButton";
+import ExploreButton from "./ExploreButton";
 
 const Hero = () => {
   const handleScroll = () => {};
@@ -14,11 +14,7 @@ const Hero = () => {
           Streamline your car rental experience with our effortless booking
           proccess.
         </p>
-        <CustomButton
-          title="Explore Cars"
-          containerStyles="bg-primary-blue text-white rounded-full mt-10"
-          handleClick={handleScroll}
-        />
+        <ExploreButton />
       </div>
       <div className="hero__image-container">
         <div className="hero__image">
